@@ -7,7 +7,11 @@ function manifest_path($app, $bucket) {
 
 function parse_json($path) {
     if(!(test-path $path)) { return $null }
-    Get-Content $path -raw -Encoding UTF8 | convertfrom-json -ea stop
+    try {
+        Get-Content $path -raw -Encoding UTF8 | convertfrom-json -ea stop
+    } catch {
+        warn "Invalid json format: $path"
+    }
 }
 
 function url_manifest($url) {
